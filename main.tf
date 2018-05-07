@@ -26,12 +26,20 @@ resource "heroku_app" "application" {
 
   name   = "${random_pet.application.id}-${element(local.stages, count.index)}"
   region = "${var.region}"
+  stack  = "container"
 
   count = "${length(local.stages)}"
 }
 
 resource "heroku_pipeline" "application" {
-  name = "application-pipeline"
+  name = "pipeline"
+}
+
+resource "heroku_addon" "hostedgraphite" {
+  app  = "${element(heroku_app.application.*.name, count.index)}"
+  plan = "hostedgraphite:free"
+
+  count = "${length(local.stages)}"
 }
 
 resource "heroku_pipeline_coupling" "application" {
