@@ -1,3 +1,12 @@
+terraform {
+  backend "gcs" {
+    bucket = "mako-tfstate"
+    prefix = "terraform/state"
+  }
+
+  required_version = ">= 0.11.7"
+}
+
 provider "heroku" {
   api_key = "${var.api_key}"
   email   = "${var.email}"
