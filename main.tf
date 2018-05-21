@@ -28,6 +28,7 @@ resource "random_pet" "application" {
 
 resource "heroku_app" "application" {
   buildpacks = [
+    "heroku/python",
     "heroku/nodejs",
   ]
 
@@ -35,7 +36,6 @@ resource "heroku_app" "application" {
 
   name   = "${random_pet.application.id}-${element(local.stages, count.index)}"
   region = "${var.region}"
-  stack  = "container"
 
   count = "${length(local.stages)}"
 }
